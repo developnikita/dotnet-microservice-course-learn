@@ -6,12 +6,10 @@ using Play.Catalog.Service.Entities;
 
 namespace Play.Catalog.Service.Repositories
 {
-    public class ItemsRepository
+    public class ItemsRepository : IItemsRepository
     {
-        public ItemsRepository()
+        public ItemsRepository(IMongoDatabase database)
         {
-            var mongoClient = new MongoClient("mongodb://localhost:27017");
-            var database = mongoClient.GetDatabase("Catalog");
             _dbCollection = database.GetCollection<Item>(COLLECTION_NAME);
         }
 
@@ -49,8 +47,8 @@ namespace Play.Catalog.Service.Repositories
             await _dbCollection.DeleteOneAsync(filter);
         }
 
-        private const string COLLECTION_NAME = "items";
         private readonly IMongoCollection<Item> _dbCollection;
         private readonly FilterDefinitionBuilder<Item> _filterBuilder = Builders<Item>.Filter;
+        private const string COLLECTION_NAME = "items";
     }
 }
