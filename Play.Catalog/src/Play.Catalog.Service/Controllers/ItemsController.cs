@@ -19,10 +19,10 @@ namespace Play.Catalog.Service.Controller
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ItemDto>> GetAsync()
+        public async Task<ActionResult<IEnumerable<ItemDto>>> GetAsync()
         {
             var items = (await _itemsRepository.GetAllAsync()).Select(item => item.AsDto());
-            return items;
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
